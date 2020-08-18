@@ -9,13 +9,15 @@ export default function App() {
   const changedText = 'HAHAHAHA';
   const [renderText, setText] = useState(startText);
   const [courseGoals, setCourseGoals] = useState([]);
+  const [isAddGoal, setIsAddGoal] = useState(false);
 
   const changeText = () => {
       renderText === startText ? setText(changedText) : setText(startText);
   }
 
   const addGoalHandler = (enteredGoalText) => {
-      setCourseGoals(currentGoals => [...currentGoals, {key: Math.random().toString(), value: enteredGoalText}]);
+      enteredGoalText ? setCourseGoals(currentGoals => [...currentGoals, {key: Math.random().toString(), value: enteredGoalText}]) : null;
+      setIsAddGoal(false);
   };
 
   const removeGoalHandler = (goalId) => {
@@ -25,8 +27,13 @@ export default function App() {
   return (
     <View style={styles.container}>
         <StatusBar style="auto" />
+        <Button
+            title="ADD NEW GOAL"
+            onPress={() => setIsAddGoal(true)}
+        />
         <GoalInput
             addGoalHandler={addGoalHandler}
+            visible={isAddGoal}
         />
         <FlatList
             keyExtractor={(item, index) => item.key}
